@@ -19,23 +19,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔓 Auth APIs (UNCHANGED)
+
                         .requestMatchers("/api/auth/**").permitAll()
 
-                        // 🔐 Admin APIs (UNCHANGED)
+
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // 🛒 Product APIs (NEW – ADDED ONLY)
+
                         .requestMatchers(HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/products/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/categories").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/admin/categories/**").hasRole("ADMIN")
 
-                        // 👤 User APIs (UNCHANGED)
+
                         .requestMatchers("/api/user/**").hasRole("USER")
 
-                        // ❌ Default rule (UNCHANGED)
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()); // BASIC AUTH
